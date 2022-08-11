@@ -1,0 +1,14 @@
+.right-panel {
+  width: 249px;
+  height: 100vh;
+  flex-shrink: 0;
+  background-color: #ffffff;
+}
+
+.text-config-item {
+  margin: 4px 0;
+}
+
+.placeholder-end input {
+  text-align: right;
+}

@@ -1,0 +1,15 @@
+.left-panel {
+  width: 249px;
+  height: 100vh;
+  flex-shrink: 0;
+  background-color: #d9d9d9;  
+}
+
+.component-list {
+  height: 80vh;
+  display:flex;
+}
+
+.save-button {
+  width: 100%;
+}

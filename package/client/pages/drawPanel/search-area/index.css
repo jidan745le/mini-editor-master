@@ -1,0 +1,18 @@
+.place-item {
+    border:1px solid #ffffff;
+    width:33%
+}
+
+.place-item:hover {
+    border: 1px dashed rgb(112, 184, 240)
+
+}
+
+.item-label:hover[contentEditable="true"] {
+    outline: none;
+}
+
+
+.item-label:focus {
+    outline: none;
+}
