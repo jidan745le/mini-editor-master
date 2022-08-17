@@ -70,7 +70,7 @@ const ControlItem = ({ searchItemConfig, onChange }) => {
             contentEditable>
             {label}
         </label>：
-        {<Component style={{ width: "30%", marginRight: "0.2em" }}>
+        {<Component options={searchItemConfig?.optionConfig?.options} style={{ width: "30%", marginRight: "0.2em" }}>
         </Component>}
         <Tag>{name}</Tag>
     </div>
@@ -120,7 +120,8 @@ const SeachItem = (props: any) => {
             collect: (monitor) => ({
                 isOver: monitor.isOver(),
                 canDrop: monitor.canDrop(),
-                originItem: monitor.getItem()
+                originItem: monitor.getItem(),
+                isDrop:monitor.didDrop()
             })
         }
     }, [onDropFromControlPannel, onDropInCanvas, onExchangeInCanvas, onChange])
@@ -172,7 +173,8 @@ const SeachItem = (props: any) => {
             display: "flex",
             alignItems: "center",
             backgroundClip: "padding-box",
-            ...isExchangeOverStyle[isExchangeOver]
+            ...isExchangeOverStyle[isExchangeOver],
+            outline:canDrop?"1px dashed orange":"none"
         }}>
         {generateControlItem()}
         {toolVisible && <div style={{ position: "absolute", top: 0, right: 0 }}>

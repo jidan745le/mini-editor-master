@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -31,6 +32,12 @@ module.exports = {
       template: path.resolve(__dirname, '../index.html'),
       filename: 'index.html',
       title: 'template-project'
-    })
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+   })
+    // new webpack.ProvidePlugin({
+    //   process: 'process/browser',
+    // })
   ]
 };

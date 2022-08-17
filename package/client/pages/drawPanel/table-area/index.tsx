@@ -21,7 +21,23 @@ export default (props: TableAreaType) => {
             title={<div style={{ fontWeight: 600, fontSize: "20px" }}>表格区域</div>}
             extra={<Button type="primary" onClick={onAddColumns}>增加列</Button>}
         >
-            <Table scroll={{x:"100%"}} columns={columns} />
+            <Table
+                components={{
+                    header: {
+                        cell: props => {
+                            return <th tabIndex={1} >
+                                <div className='antd-th-editable'>
+                                    <span suppressContentEditableWarning contentEditable>{props.children}</span>
+                                </div>
+                            </th>
+                        }
+                    }
+                }}
+                onHeaderRow={row => {
+                    return {
+                        onClick: () => {}
+                    }
+                }} scroll={{ x: "100%" }} columns={columns} />
         </Card>
     </div>
 }

@@ -1,28 +1,42 @@
 import React from 'react';
 import { RIGHT_PANEL_TYPE } from '../../constants';
 import './style.css';
-import { List, Input } from 'antd-mobile'
+import { List, Input,Collapse,Selector,Button } from 'antd-mobile'
+import OptionConfigure from "./components/option-configure"
 
 
 interface IRigthPanelProps {
   itemData: any;
   setSelctedDrawPanelData: Function;
 }
+
+
 export default function RightPanel(props: IRigthPanelProps) {
   const { itemData,setSelctedDrawPanelData } = props;
-
+  const [optionType,setOptionType] = React.useState(itemData.optionType)
   const generateRightPanel = () => {
     if (itemData.type === RIGHT_PANEL_TYPE.SELECT) {
-      return <div>SELECT控件</div>;
+      return <div>  <List header='下拉框设置'>
+        <List.Item  key={1} extra={itemData.label}>标题</List.Item>
+        <List.Item  key={2} extra={<Input defaultValue={itemData.name} onBlur={e => { setSelctedDrawPanelData("name", e.target.value) }} className="placeholder-end" placeholder='请输入' />}>字段</List.Item>
+
+        <Collapse>
+          <Collapse.Panel  key='1' title='键值对'>
+            <OptionConfigure 
+            itemData={itemData}
+            setSelctedDrawPanelData={setSelctedDrawPanelData}/>
+          </Collapse.Panel>
+        </Collapse>
+     
+      </List></div>;
     } else if (itemData.type === RIGHT_PANEL_TYPE.TEXT) {
       //文本
 
       return (
         <div>
           <List header='文本框设置'>
-            <List.Item extra={itemData.label}>标题</List.Item>
-            <List.Item extra={<Input onBlur={e => {setSelctedDrawPanelData("name",e.target.value)}} className="placeholder-end" placeholder='请输入'/>}>字段</List.Item>
-            <List.Item>其他</List.Item>
+            <List.Item key={1} extra={itemData.label}>标题</List.Item>
+            <List.Item key={2} extra={<Input onBlur={e => {setSelctedDrawPanelData("name",e.target.value)}} className="placeholder-end" placeholder='请输入'/>}>字段</List.Item>
           </List>
         </div>
       );

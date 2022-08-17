@@ -1,8 +1,9 @@
 .right-panel {
-  width: 249px;
+  width: 350px;
   height: 100vh;
   flex-shrink: 0;
   background-color: #ffffff;
+  overflow: auto;
 }
 
 .text-config-item {

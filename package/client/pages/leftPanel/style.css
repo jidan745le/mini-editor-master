@@ -5,8 +5,7 @@
   background-color: #d9d9d9;  
 }
 
-.component-list {
-  height: 80vh;
+.component-list {  
   display:flex;
 }
 
