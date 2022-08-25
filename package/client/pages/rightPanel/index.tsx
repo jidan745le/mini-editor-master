@@ -18,7 +18,7 @@ export default function RightPanel(props: IRigthPanelProps) {
     if (itemData.type === RIGHT_PANEL_TYPE.SELECT) {
       return <div>  <List header='下拉框设置'>
         <List.Item  key={1} extra={itemData.label}>标题</List.Item>
-        <List.Item  key={2} extra={<Input defaultValue={itemData.name} onBlur={e => { setSelctedDrawPanelData("name", e.target.value) }} className="placeholder-end" placeholder='请输入' />}>字段</List.Item>
+        <List.Item  key={2} extra={itemData.name}>字段</List.Item>
 
         <Collapse>
           <Collapse.Panel  key='1' title='键值对'>
@@ -36,7 +36,7 @@ export default function RightPanel(props: IRigthPanelProps) {
         <div>
           <List header='文本框设置'>
             <List.Item key={1} extra={itemData.label}>标题</List.Item>
-            <List.Item key={2} extra={<Input onBlur={e => {setSelctedDrawPanelData("name",e.target.value)}} className="placeholder-end" placeholder='请输入'/>}>字段</List.Item>
+            <List.Item key={2} extra={itemData.name}>字段</List.Item>
           </List>
         </div>
       );

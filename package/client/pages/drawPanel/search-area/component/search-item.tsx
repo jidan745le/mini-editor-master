@@ -47,6 +47,15 @@ const ControlItem = ({ searchItemConfig, onChange }) => {
         )
     }
 
+    const onEditVarname = e => {
+        onChange && onChange(
+            searchItemConfig,
+            "name",
+            e.target.innerText
+        )
+    }
+    
+
     const {
         type,
         name,
@@ -72,7 +81,18 @@ const ControlItem = ({ searchItemConfig, onChange }) => {
         </label>：
         {<Component options={searchItemConfig?.optionConfig?.options} style={{ width: "30%", marginRight: "0.2em" }}>
         </Component>}
-        <Tag>{name}</Tag>
+        <Tag
+            suppressContentEditableWarning
+            contentEditable
+            onBlur={onEditVarname}
+            onKeyDown={e => {
+                if (e.code === "Enter") {
+                    e.preventDefault();
+                    e.target.blur();
+                }
+            }}>
+            {name}
+        </Tag>        
     </div>
 }
 

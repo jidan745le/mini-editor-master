@@ -19,6 +19,7 @@ const KeyValueTable = ({onChange,values}) => {
       {dataIndex:"handle",
        title:"handle",
        width:"20%",
+       ellipsis:true,
        render:(_,row) => <DeleteOutlined onClick={()=>{onDelete(row.key)}} style={{cursor:"pointer"}} />
       }
     ]

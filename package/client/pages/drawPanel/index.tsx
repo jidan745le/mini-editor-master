@@ -3,6 +3,7 @@ import React, { useState, createContext } from 'react';
 import './style.css';
 import SearchArea from "./search-area"
 import TableArea from './table-area';
+import { Button,Drawer } from 'antd';
 export const DrawPanelContext = createContext(null);
 
 interface IDrawPanelProps {
@@ -118,6 +119,17 @@ function transformToNewSearchItems<T extends keyof SearchChangeTypePayloadMap>(t
 
 export default function DrawPanel(props: IDrawPanelProps) {
   const { drawPanelData, onDrawPanelDataSet } = props;
+  const [visible, setVisible] = useState(false);
+  const frameDom =  React.useRef(null)
+
+  const showDrawer = () => {
+    frameDom.current && frameDom.current.contentWindow.postMessage(drawPanelData,"*")
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
   console.log(drawPanelData, "drawPanelData")
   //search部分
   const onItemDropped = (originItem, dropIndex) => {
@@ -211,6 +223,28 @@ export default function DrawPanel(props: IDrawPanelProps) {
       <div
         className="draw-panel"
       >
+        <Button onClick={showDrawer}>预览</Button>
+        <Drawer
+          title="预览"
+          placement="right"
+          onClose={onClose}
+          visible={visible}
+          width="100vw"       
+        >
+          <iframe ref={ref => {
+            console.log(ref,"ref..........")
+            if(!ref){
+              return;
+            }
+           frameDom.current = ref;
+           frameDom.current.onload = () =>{
+            frameDom.current.contentWindow.postMessage(drawPanelData,"*")
+           }           
+          }} style={{ border: "0px" }}
+            height="100%"
+            width="100%"
+            src="http://localhost:9999" />
+        </Drawer>
         <SearchArea
           onDropFromControlPannel={onItemDropped}
           onDropInCanvas={onDropTo}
