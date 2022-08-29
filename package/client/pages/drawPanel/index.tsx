@@ -3,7 +3,9 @@ import React, { useState, createContext } from 'react';
 import './style.css';
 import SearchArea from "./search-area"
 import TableArea from './table-area';
-import { Button,Drawer } from 'antd';
+import { Button, Drawer,Modal } from 'antd';
+import ReactJson from "react-json-view"
+
 export const DrawPanelContext = createContext(null);
 
 interface IDrawPanelProps {
@@ -120,10 +122,12 @@ function transformToNewSearchItems<T extends keyof SearchChangeTypePayloadMap>(t
 export default function DrawPanel(props: IDrawPanelProps) {
   const { drawPanelData, onDrawPanelDataSet } = props;
   const [visible, setVisible] = useState(false);
-  const frameDom =  React.useRef(null)
+  const frameDom = React.useRef(null)
+  const [jsonVisible,setJsonVisible] = React.useState(false)
+
 
   const showDrawer = () => {
-    frameDom.current && frameDom.current.contentWindow.postMessage(drawPanelData,"*")
+    frameDom.current && frameDom.current.contentWindow.postMessage(drawPanelData, "*")
     setVisible(true);
   };
 
@@ -218,28 +222,39 @@ export default function DrawPanel(props: IDrawPanelProps) {
     onDrawPanelDataSet("search", newItems)
   }
 
+  const onHeaderCellChange = (type, columns) => {
+    onDrawPanelDataSet("columns", columns)
+  }
+
   return (
-    <DrawPanelContext.Provider value={{ onDelete, onCopy,searchItems:drawPanelData["search"] }}>
+    <DrawPanelContext.Provider value={{ onDelete, onCopy, searchItems: drawPanelData["search"] }}>
       <div
         className="draw-panel"
       >
         <Button onClick={showDrawer}>预览</Button>
+        <Button onClick={
+          () => {
+            setJsonVisible(true)
+          }}>
+          Json
+        </Button>
+
         <Drawer
           title="预览"
           placement="right"
           onClose={onClose}
           visible={visible}
-          width="100vw"       
+          width="100vw"
         >
           <iframe ref={ref => {
-            console.log(ref,"ref..........")
-            if(!ref){
+            console.log(ref, "ref..........")
+            if (!ref) {
               return;
             }
-           frameDom.current = ref;
-           frameDom.current.onload = () =>{
-            frameDom.current.contentWindow.postMessage(drawPanelData,"*")
-           }           
+            frameDom.current = ref;
+            frameDom.current.onload = () => {
+              frameDom.current.contentWindow.postMessage(drawPanelData, "*")
+            }
           }} style={{ border: "0px" }}
             height="100%"
             width="100%"
@@ -253,7 +268,18 @@ export default function DrawPanel(props: IDrawPanelProps) {
           onAdd={onAdd}
           searchAreaItems={drawPanelData["search"]}
         />
-        <TableArea />
+        <TableArea onHeaderCellChange={onHeaderCellChange} />
+        <Modal
+          onCancel={() => setJsonVisible(false)}
+          visible={jsonVisible}
+          title="json数据">
+            <ReactJson
+                displayObjectSize={false}
+                enableClipboard={true}
+                src={drawPanelData}
+                displayDataTypes={false}
+            />
+        </Modal>
       </div>
     </DrawPanelContext.Provider>
   );
