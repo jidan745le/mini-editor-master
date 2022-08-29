@@ -5,6 +5,7 @@ import SearchArea from "./search-area"
 import TableArea from './table-area';
 import { Button, Drawer,Modal } from 'antd';
 import ReactJson from "react-json-view"
+import {cloneDeep} from "lodash"
 
 export const DrawPanelContext = createContext(null);
 
@@ -127,7 +128,11 @@ export default function DrawPanel(props: IDrawPanelProps) {
 
 
   const showDrawer = () => {
-    frameDom.current && frameDom.current.contentWindow.postMessage(drawPanelData, "*")
+    const data = cloneDeep(drawPanelData);
+    data.columns.forEach(column => {
+      delete column.onHeaderCell;
+    })
+    frameDom.current && frameDom.current.contentWindow.postMessage(data, "*")
     setVisible(true);
   };
 
@@ -253,7 +258,11 @@ export default function DrawPanel(props: IDrawPanelProps) {
             }
             frameDom.current = ref;
             frameDom.current.onload = () => {
-              frameDom.current.contentWindow.postMessage(drawPanelData, "*")
+              const data = cloneDeep(drawPanelData);
+              data.columns.forEach(column => {
+                delete column.onHeaderCell;
+              })
+              frameDom.current.contentWindow.postMessage(data, "*")
             }
           }} style={{ border: "0px" }}
             height="100%"
